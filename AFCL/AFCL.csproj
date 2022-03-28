@@ -1,0 +1,96 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{0D6D2429-46D5-466E-9493-DD4D6071A641}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>AFCL</RootNamespace>
+    <AssemblyName>AFCL</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Assembly-CSharp, Version=1.2.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\H3VR.GameLibs.0.102.0.1-r.0\lib\net35\Assembly-CSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="Assembly-CSharp-firstpass, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\H3VR.GameLibs.0.102.0.1-r.0\lib\net35\Assembly-CSharp-firstpass.dll</HintPath>
+    </Reference>
+    <Reference Include="BepInEx, Version=5.4.19.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\BepInEx.BaseLib.5.4.19\lib\net35\BepInEx.dll</HintPath>
+    </Reference>
+    <Reference Include="MMHOOK_Assembly-CSharp">
+      <HintPath>G:\H3VR Prts\TSInstallLocal\H3VR\profiles\TestingProfile\BepInEx\plugins\MMHOOK\MMHOOK_Assembly-CSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="UnityEngine, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\UnityEngine.5.6.1\lib\net35\UnityEngine.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UI, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\H3VR.GameLibs.0.102.0.1-r.0\lib\net35\UnityEngine.UI.dll</HintPath>
+    </Reference>
+    <Reference Include="Valve.Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\H3VR.GameLibs.0.102.0.1-r.0\lib\net35\Valve.Newtonsoft.Json.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AutoBolt.cs" />
+    <Compile Include="AutoBoltHandle.cs" />
+    <Compile Include="bangerSwitchInterp.cs" />
+    <Compile Include="betterOverheat.cs" />
+    <Compile Include="BreakableArmour.cs" />
+    <Compile Include="EnableOnSpecificUser.cs" />
+    <Compile Include="EnergySword.cs" />
+    <Compile Include="ForeGripMagRelease.cs" />
+    <Compile Include="AFCL+BepInEx.cs" />
+    <Compile Include="MultiEnableLaserPointer.cs" />
+    <Compile Include="NightVisionPostEffect.cs" />
+    <Compile Include="PostEffectScript.cs" />
+    <Compile Include="PrefabLoaderReadme.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="proxGrenade.cs" />
+    <Compile Include="proxGrenadeRing.cs" />
+    <Compile Include="ScopeZoomRotate.cs" />
+    <Compile Include="ShatterableArmour.cs" />
+    <Compile Include="ShatterableArmourPiece.cs" />
+    <Compile Include="stickyObject.cs" />
+    <Compile Include="thermiteFire.cs" />
+    <Compile Include="ToggleBetweenPoints.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="nuget.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>copy $(TargetPath) "G:\H3VR Prts\TSInstallLocal\H3VR\profiles\TestingProfile\BepInEx\monomod\Andrew_FTW-FTW_Arms_AFCL\FTWScripts\Assembly-CSharp.ftwScripts.mm.dll"
+copy $(TargetPath) "G:\H3VR Prts\TSInstallLocal\H3VR\profiles\TestingProfile\BepInEx\plugins\Andrew_FTW-FTW_Arms_AFCL\ftwScripts.dll"</PostBuildEvent>
+  </PropertyGroup>
+</Project>
