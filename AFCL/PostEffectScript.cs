@@ -2,15 +2,18 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[ExecuteInEditMode]
-public class PostEffectScript : MonoBehaviour
+namespace AndrewFTW
 {
-
-    public Material mat;
-
-
-    void OnRenderImage(RenderTexture src, RenderTexture dest)
+    [ExecuteInEditMode]
+    public class PostEffectScript : MonoBehaviour
     {
-        Graphics.Blit(src, dest, mat);
+
+        public Material mat;
+
+
+        void OnRenderImage(RenderTexture src, RenderTexture dest)
+        {
+            Graphics.Blit(src, dest, mat);
+        }
     }
 }

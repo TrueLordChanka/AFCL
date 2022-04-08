@@ -24,7 +24,7 @@ namespace Plugin.src
         public Axis axis;
         public float pressed;
         public float unpressed;
-        public float InteractDelay;
+        public float InteractDelay2 = 0.75f;
         public GameObject InteractionCollider;
         private FVRViveHand m_hand;
 
@@ -42,7 +42,16 @@ namespace Plugin.src
 
         public void Update()
         {
-            if (m_hand != null && !grip.m_wasGrabbedFromAttachableForegrip) //if your holding it
+            if(m_hand != null && m_hand.OtherHand.m_currentInteractable == gun && m_hand.CurrentInteractable == null)
+            {
+                m_hand = null;
+
+            } else if(m_hand != null && m_hand.OtherHand.m_currentInteractable != gun && m_hand.CurrentInteractable == null)
+            {
+                m_hand = null;
+            }
+            //Debug.Log("grabbed from attachable grip: " + grip.GetLastGrabbedGrip().name);
+            if (m_hand != null && grip.GetLastGrabbedGrip() == null) //if your holding it
             {
                 if (!isInteractHidden) //if the things not hidden
                 {
@@ -90,7 +99,7 @@ namespace Plugin.src
                     {
                         if (gun.Bolt.CurPos >= ClosedBolt.BoltPos.Locked) //if the bolt is behind the lock point
                         {
-                            if (m_hand.Input.TouchpadPressed && Vector2.Angle(m_hand.Input.TouchpadAxes, Vector2.right) < 45f) //button clicked
+                            if (m_hand.Input.TouchpadPressed && Vector2.Angle(m_hand.Input.TouchpadAxes, Vector2.up) < 45f) //button clicked
                             {
                                 gun.Bolt.LockBolt();
                             }
@@ -112,7 +121,7 @@ namespace Plugin.src
             if (self == grip)
             {
                 StartCoroutine(ReactivateButton());
-                m_hand = null;
+                
             }
             orig(self, hand);
         }
@@ -128,7 +137,7 @@ namespace Plugin.src
 
         IEnumerator ReactivateButton()
         {
-            yield return new WaitForSeconds(InteractDelay);
+            yield return new WaitForSeconds(InteractDelay2);
             InteractionCollider.SetActive(true);
             isInteractHidden = false;
         }

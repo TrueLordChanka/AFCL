@@ -68,8 +68,9 @@
     <Compile Include="BreakableArmour.cs" />
     <Compile Include="EnableOnSpecificUser.cs" />
     <Compile Include="EnergySword.cs" />
+    <Compile Include="FireSubprojAtTime.cs" />
     <Compile Include="ForeGripMagRelease.cs" />
-    <Compile Include="AFCL+BepInEx.cs" />
+    <Compile Include="AFCL_BepInEx.cs" />
     <Compile Include="MultiEnableLaserPointer.cs" />
     <Compile Include="NightVisionPostEffect.cs" />
     <Compile Include="PostEffectScript.cs" />
@@ -82,6 +83,7 @@
     <Compile Include="ShatterableArmourPiece.cs" />
     <Compile Include="stickyObject.cs" />
     <Compile Include="thermiteFire.cs" />
+    <Compile Include="FireSubprojAtDistance.cs" />
     <Compile Include="ToggleBetweenPoints.cs" />
   </ItemGroup>
   <ItemGroup>
