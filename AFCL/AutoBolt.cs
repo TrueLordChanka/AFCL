@@ -989,14 +989,9 @@ namespace Plugin.src
 			}
 		}
 
-		public override List<string> GetFlagList()
-		{
-			return null;
-		}
+		
 
-		public override void SetFromFlagList(List<string> flags)
-		{
-		}
+		
 
 		public override void ConfigureFromFlagDic(Dictionary<string, string> f)
 		{

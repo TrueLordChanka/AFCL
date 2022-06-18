@@ -43,7 +43,7 @@ namespace Plugin.src
 		
         public void Damage(Damage d)
         {
-            damageTaken = damageTaken + d.Dam_TotalKinetic;
+            damageTaken = damageTaken + d.Dam_TotalKinetic + d.Dam_TotalEnergetic;
             if (isDebug)
             {
                 Debug.Log("Damange taken: " + d.Dam_TotalKinetic);

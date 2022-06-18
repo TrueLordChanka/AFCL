@@ -8,7 +8,7 @@ using Unity;
 using System.Collections;
 
 
-namespace Plugin.src
+namespace AndrewFTW
 { 
     public class FireSubprojAtTime : MonoBehaviour
     {
@@ -59,9 +59,9 @@ namespace Plugin.src
         private bool m_hasFiredTangentMunitions;
 		private float currLifeTime= 0;
 
-#if !(UNITY_EDITOR || UNITY_5)
+#if !(UNITY_EDITOR || UNITY_5 || DEBUG == true)
 
-        public void Awake()
+		public void Awake()
         {
             Hook();
 			
@@ -73,6 +73,16 @@ namespace Plugin.src
             On.FistVR.BallisticProjectile.FixedUpdate += BallisticProjectile_FixedUpdate;
             
         }
+
+		public void OnDestroy()
+		{
+			Unhook();
+		}
+
+		public void Unhook()
+		{
+			On.FistVR.BallisticProjectile.FixedUpdate -= BallisticProjectile_FixedUpdate;
+		}
 
 		public void Update()
         {

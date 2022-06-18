@@ -8,62 +8,27 @@ using Unity;
 using System.Collections;
 
 
-namespace Plugin.src
+namespace AndrewFTW
 { 
     public class FireSubprojAtDistance : MonoBehaviour
     {
         public BallisticProjectile parentRound;
-        public float distanceToFire;
+        public float distanceToFire; 
 
         [Header("Tangent Munitions")]
-        public List<c_TangentMunition> TangentMunitions; //List of class c_TangentMunitions
-
-
+        //public List<c_TangentMunition> TangentMunitions; //List of class c_TangentMunitions
+		public List<BallisticProjectile.Submunition> TangentMunitions;
 		
-        [Serializable]
-        public class c_TangentMunition //random shit for the tangent projectiles
-        {
-            public List<GameObject> Prefabs;
-            public int NumToSpawn;
-            public BallisticProjectile.Submunition.SubmunitionTrajectoryType Trajectory;
-            public BallisticProjectile.Submunition.SubmunitionType Type;
-            public BallisticProjectile.Submunition.SubmunitionSpawnLogic SpawnLogic;
-            public Vector2 Speed = default(Vector2);
-			public bool usesParentSpeed;
-            public float ConeLerp = 0.85f;
-        
-            public enum SubmunitionType 
-            {
-                GameObject,
-                Projectile,
-                Rigidbody,
-                StickyBomb,
-                MeleeThrown,
-                Demonade
-            }
-            public enum SubmunitionTrajectoryType
-            {
-                Random,
-                RicochetDir,
-                Backwards,
-                Forwards,
-                ForwardsCone
-            }
-            public enum SubmunitionSpawnLogic
-            {
-                Outside,
-                Inside,
-                On
-            }
-        }
-        private bool m_hasFiredTangentMunitions;
+		public List<bool> usesParentSpeed;
 
-#if !(UNITY_EDITOR || UNITY_5)
+		private bool m_hasFiredTangentMunitions;
 
-        public void Awake()
+#if !(UNITY_EDITOR || UNITY_5 || DEBUG == true)
+
+		public void Awake()
         {
             Hook();
-        }
+        } 
 
         public void Hook()
         {
@@ -72,7 +37,17 @@ namespace Plugin.src
             
         }
 
-        private void BallisticProjectile_FixedUpdate(On.FistVR.BallisticProjectile.orig_FixedUpdate orig, BallisticProjectile self)
+		public void OnDestroy()
+		{
+			Unhook();
+		}
+
+		public void Unhook()
+		{
+			On.FistVR.BallisticProjectile.FixedUpdate -= BallisticProjectile_FixedUpdate;
+		}
+
+		private void BallisticProjectile_FixedUpdate(On.FistVR.BallisticProjectile.orig_FixedUpdate orig, BallisticProjectile self)
         {
             orig(self);//run the normal "fixed Update" thing
             if(self == parentRound) //This is where all the code will go to ensure that the round is the correct one being hooked.
@@ -94,7 +69,7 @@ namespace Plugin.src
 				for (int i = 0; i < this.TangentMunitions.Count; i++)
 				{
 					//BallisticProjectile.Submunition submunition = this.TangentMunitions[i];
-					c_TangentMunition submunition = TangentMunitions[i];
+					BallisticProjectile.Submunition submunition = TangentMunitions[i];
 					Vector3 vector = shatterRicochetDir;
 					Vector3 vector2 = hitPoint;
 					for (int j = 0; j < submunition.NumToSpawn; j++)
@@ -102,7 +77,7 @@ namespace Plugin.src
 						GameObject original = submunition.Prefabs[UnityEngine.Random.Range(0, submunition.Prefabs.Count)];
 						float launchVel;
 
-						if (submunition.usesParentSpeed)
+						if (usesParentSpeed[i])
                         {
 							launchVel = parentRound.m_velocity.magnitude;
                         }
@@ -189,6 +164,7 @@ namespace Plugin.src
 				}
 			}
         }
+
 
 
 

@@ -7,35 +7,30 @@ using FistVR;
 using Unity;
 
 
-namespace Plugin.src
+namespace AndrewFTW
 { 
 
     [RequireComponent (typeof(PMat))]
     public class ShatterableArmourPiece : MonoBehaviour, IFVRDamageable
     {
-
-        public MatDef defaultMatdef;
-        public MatDef brokenMatdef;
-        public float durability;
-        public AudioEvent shatter;
-        public ShatterableArmour ParentArmour;
-
-        public float damageTaken;
+        public ShatterableArmour ParentArmour; 
 
 #if !(UNITY_EDITOR || UNITY_5)
-        public void Start()
-        {
-            GetComponent<PMat>().MatDef = defaultMatdef;
-        }
-
+        
         public void Damage(Damage d)
         {
-            ParentArmour.damageTaken += d.Dam_TotalKinetic;
+            ParentArmour._damageTaken += d.Dam_TotalKinetic;
+            Debug.Log("Damage: " + d.Dam_TotalKinetic + "was just taken");
         }
 
-        public void Shatter()
+        public void Initialize(MatDef DefaultMatDef)
         {
-            GetComponent<PMat>().MatDef = brokenMatdef;
+            GetComponent<PMat>().MatDef = DefaultMatDef;
+        }
+
+        public void Shatter(MatDef BrokenMatDef)
+        {
+            GetComponent<PMat>().MatDef = BrokenMatDef;
         }
 #endif
     }
