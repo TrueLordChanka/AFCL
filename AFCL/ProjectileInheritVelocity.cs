@@ -15,23 +15,37 @@ namespace AndrewFTW
         public BallisticProjectile parentRound;
 
 		public List<bool> usesParentSpeed;
-
-		
+		public float ParentSpeedMultiplier = 1f;
+		public float InitialSpeed;
+		private float _parentRoundVel;
 
 #if !(UNITY_EDITOR || UNITY_5 || DEBUG == true)
-		 
+
 		public void Awake()
         {
+			_parentRoundVel = InitialSpeed;
             Hook(); 
         } 
 
         public void Hook()
         {
-            Debug.Log("Hooking Ballistic Projectile");
+            //Debug.Log("Hooking Ballistic Projectile");
             On.FistVR.BallisticProjectile.FireSubmunitions += BallisticProjectile_FireSubmunitions;
         }
 
-        private void BallisticProjectile_FireSubmunitions(On.FistVR.BallisticProjectile.orig_FireSubmunitions orig, BallisticProjectile self, Vector3 shatterRicochetDir, Vector3 velNorm, Vector3 hitPoint, float VelocityOverride)
+		public void Update()
+		{
+			if (!parentRound.m_hasFiredSubmunitions)
+			{
+				//Debug.Log("perentRndvel:" + parentRound.m_velocity.magnitude);
+				if (parentRound.m_velocity.magnitude > 1)
+				{
+					_parentRoundVel = parentRound.m_velocity.magnitude;
+				}
+			}
+		}
+
+		private void BallisticProjectile_FireSubmunitions(On.FistVR.BallisticProjectile.orig_FireSubmunitions orig, BallisticProjectile self, Vector3 shatterRicochetDir, Vector3 velNorm, Vector3 hitPoint, float VelocityOverride)
         {
 			if (self == parentRound)
 			{
@@ -50,13 +64,20 @@ namespace AndrewFTW
 							float launchVel;
 							if (usesParentSpeed[i])
 							{
-								launchVel = parentRound.m_velocity.magnitude;
+								if (_parentRoundVel < 10f)
+								{
+									launchVel = 10f;
+								}
+								else
+								{
+									launchVel = _parentRoundVel * ParentSpeedMultiplier;
+								}
 							}
 							else
 							{
 								launchVel = UnityEngine.Random.Range(submunition.Speed.x, submunition.Speed.y);
 							}
-
+							//Debug.Log("launchvel:" + launchVel);
 
 
 							switch (submunition.Trajectory)

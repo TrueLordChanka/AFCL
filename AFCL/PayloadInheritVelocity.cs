@@ -18,7 +18,7 @@ namespace AndrewFTW
         public void Update()
         {
             
-            if (ParentGrenade.m_fuseTime <= 0.1 && !ParentGrenade.m_hasSploded)
+            if (ParentGrenade.m_fuseTime <= 0.06 && !ParentGrenade.m_hasSploded)
             {
                 Debug.Log("HasSploded!");
                 for (int i = 0; i < SpawnOnExplode.Length; i++)
@@ -48,7 +48,7 @@ namespace AndrewFTW
                     {
                         Debug.Log("FuckFuckFuckFuckFuckFuck");
                     }
-
+                    ParentGrenade.m_hasSploded = true;
 
                     if (SplodeObjsToInheritVelocity[i] == true)
                     {

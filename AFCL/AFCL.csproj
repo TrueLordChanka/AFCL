@@ -33,13 +33,13 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Assembly-CSharp, Version=1.2.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\H3VR.GameLibs.0.104.0-r.0\lib\net35\Assembly-CSharp.dll</HintPath>
+      <HintPath>..\packages\H3VR.GameLibs.0.105.4\lib\net35\Assembly-CSharp.dll</HintPath>
     </Reference>
     <Reference Include="Assembly-CSharp-firstpass, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\H3VR.GameLibs.0.104.0-r.0\lib\net35\Assembly-CSharp-firstpass.dll</HintPath>
+      <HintPath>..\packages\H3VR.GameLibs.0.105.4\lib\net35\Assembly-CSharp-firstpass.dll</HintPath>
     </Reference>
-    <Reference Include="BepInEx, Version=5.4.19.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\BepInEx.BaseLib.5.4.19\lib\net35\BepInEx.dll</HintPath>
+    <Reference Include="BepInEx, Version=5.4.21.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\BepInEx.BaseLib.5.4.21\lib\net35\BepInEx.dll</HintPath>
     </Reference>
     <Reference Include="MMHOOK_Assembly-CSharp, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -55,13 +55,23 @@
       <HintPath>..\packages\UnityEngine.5.6.1\lib\net35\UnityEngine.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.UI, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\H3VR.GameLibs.0.104.0-r.0\lib\net35\UnityEngine.UI.dll</HintPath>
+      <HintPath>..\packages\H3VR.GameLibs.0.105.4\lib\net35\UnityEngine.UI.dll</HintPath>
     </Reference>
     <Reference Include="Valve.Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\H3VR.GameLibs.0.104.0-r.0\lib\net35\Valve.Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\packages\H3VR.GameLibs.0.105.4\lib\net35\Valve.Newtonsoft.Json.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BetterAffixedFlashlight.cs" />
+    <Compile Include="TubeFedShotgunInteractableSelector.cs" />
+    <Compile Include="Spas12Safety.cs" />
+    <Compile Include="DetonateAfterTime.cs" />
+    <Compile Include="ProjectileKillAtDistance.cs" />
+    <Compile Include="SimpleSwitch.cs" />
+    <Compile Include="RotateUp.cs" />
+    <Compile Include="ProjectileAirburstDetonation.cs" />
+    <Compile Include="ProjectilePreserveKineticEnergy.cs" />
+    <Compile Include="SpinnyHoloSight.cs" />
     <Compile Include="BinaryExplosive.cs" />
     <Compile Include="SubprojInRichochetDirection.cs" />
     <Compile Include="ProjectileInheritVelocity.cs" />
@@ -110,7 +120,7 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>copy $(TargetPath) "G:\H3VR Prts\TSInstallLocal\H3VR\profiles\TestingProfile\BepInEx\plugins\Andrew_FTW-FTW_Arms_AFCL\AFCL.dll"
+    <PostBuildEvent>copy $(TargetPath) "G:\H3VR Prts\TSInstallNew\H3VR\profiles\TestingProfile\BepInEx\plugins\Andrew_FTW-FTW_Arms_AFCL\AFCL.dll"
 </PostBuildEvent>
   </PropertyGroup>
 </Project>

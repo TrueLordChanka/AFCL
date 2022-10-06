@@ -20,7 +20,7 @@ namespace Plugin.src
             X,
             Y,
             Z
-        }
+        } 
         public Axis axis;
         public float pressed;
         public float unpressed;
@@ -32,7 +32,7 @@ namespace Plugin.src
 
 
 
-#if !(UNITY_EDITOR || UNITY_5)
+#if !(UNITY_EDITOR || UNITY_5 || DEBUG == true)
 
 
         public void Awake()
