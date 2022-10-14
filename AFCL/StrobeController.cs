@@ -1,4 +1,4 @@
-﻿using FistVR;
+﻿ using FistVR;
 using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
@@ -48,7 +48,7 @@ namespace AndrewFTW
             while (true)
             {
 
-                //Debug.Log("Blink " + LightToStrobe.activeSelf);
+                Debug.Log("Blink " + LightToStrobe.activeSelf);
                 //set the lights activness to the opposite of what it is now.
                 LightToStrobe.SetActive(!LightToStrobe.activeSelf);
                 if (LightToStrobe.activeInHierarchy)

@@ -14,12 +14,19 @@ namespace AndrewFTW
 		public List<bool> usesParentSpeed;
 		public float ParentSpeedMultiplier = 1f;
 
+		[Header("Smart Ricochet")]
+		public bool IsSmartRicochet;
+		public float TargetingFOV = 5f;
+		public float TargetingRange = 20f;
+		public LayerMask LM_TargetMask;
+		public LayerMask LM_Blockers;
+
+
 		private bool m_hasFiredTangentMunitions;
 		private float _parentRoundVel;
 
-
-		
-		
+		private Collider[] _targetArray = new Collider[32];
+		private float _overlapCapsulRadius;
 
 		public void Update()
 		{
@@ -64,7 +71,7 @@ namespace AndrewFTW
 						//Debug.Log("loop 1: " + i);
 						//BallisticProjectile.Submunition submunition = this.TangentMunitions[i];
 						BallisticProjectile.Submunition submunition = TangentMunitions[i];
-						Vector3 vector = shatterRicochetDir;
+						Vector3 _richochetVector = shatterRicochetDir;
 						Vector3 vector2 = hitPoint;
 						for (int j = 0; j < submunition.NumToSpawn; j++)
 						{
@@ -92,29 +99,49 @@ namespace AndrewFTW
 
 							}
 
-							/* This has to be replaced with the stuff for bouncing...
-							switch (submunition.Trajectory)
-							{
-								case BallisticProjectile.Submunition.SubmunitionTrajectoryType.Random:
-									vector = UnityEngine.Random.onUnitSphere;
-									break;
-								case BallisticProjectile.Submunition.SubmunitionTrajectoryType.Backwards:
-									vector = Vector3.Lerp(-velNorm, shatterRicochetDir, 0.5f);
-									break;
-								case BallisticProjectile.Submunition.SubmunitionTrajectoryType.Forwards:
-									vector = velNorm;
-									break;
-								case BallisticProjectile.Submunition.SubmunitionTrajectoryType.ForwardsCone:
-									vector = Vector3.Lerp(UnityEngine.Random.onUnitSphere, velNorm, submunition.ConeLerp);
-									break;
-							}
-							*/
+							
 							//Set the new trajectory to be the richochet
 							//Get the "normal" vector to the impact surface
 							Vector3 NormVector = parentRound.m_hit.normal;
 								//Vector3.Lerp(-velNorm, shatterRicochetDir, 0.5f);
 							//Set the submunition vector to be that calculated angle from the norm
-							vector = Vector3.Reflect(velNorm, NormVector);
+							_richochetVector = Vector3.Reflect(velNorm, NormVector);
+
+                            //Now, if its a smart richochet, we need to do that stuff
+                            if (IsSmartRicochet)
+                            {
+								//makes a capsul between two points, with the layer maks n shit
+								int NumTargets = Physics.OverlapCapsuleNonAlloc(transform.position, transform.position + TargetingRange * _richochetVector, _overlapCapsulRadius, _targetArray, LM_TargetMask, QueryTriggerInteraction.Collide);
+
+								Vector3 _aimedRichochetVector;
+								int _SelectedTarget = UnityEngine.Random.Range(0, NumTargets);
+
+								//The aimed vector is the position between the target and the transform
+								_aimedRichochetVector = _targetArray[_SelectedTarget].transform.position - transform.position;
+
+								//If the line is withing the cone and it doesnt hit any blockers...
+								if(Vector3.Angle(_aimedRichochetVector, _richochetVector) < TargetingFOV && !Physics.Linecast(transform.position, _targetArray[_SelectedTarget].transform.position - transform.forward * 0.2f, LM_Blockers))
+								{
+									//Aim the actual vector to the aimed vector
+									_richochetVector = _aimedRichochetVector;
+								} else //If the check doesnt succeed on the first target, 
+                                {
+									for (int k = 0; k < NumTargets; k++)
+									{
+										_aimedRichochetVector = _targetArray[k].transform.position - transform.position;
+										if (Vector3.Angle(_aimedRichochetVector, _richochetVector) < TargetingFOV && !Physics.Linecast(transform.position, _targetArray[k].transform.position - transform.forward * 0.2f, LM_Blockers))
+                                        {
+											_richochetVector = _aimedRichochetVector;
+
+											k = 40;
+
+
+										}
+									}
+								}
+
+							}
+
 
 							BallisticProjectile.Submunition.SubmunitionSpawnLogic spawnLogic = submunition.SpawnLogic;
 							if (spawnLogic != BallisticProjectile.Submunition.SubmunitionSpawnLogic.Inside)
@@ -127,11 +154,13 @@ namespace AndrewFTW
 							else
 							{
 								vector2 -= parentRound.m_hit.normal * 0.001f;
-							}
+                            }
 
+							//Spawn the richochet proj
+                            GameObject gameObject = UnityEngine.Object.Instantiate<GameObject>(original, vector2, Quaternion.LookRotation(_richochetVector));
 
-							GameObject gameObject = UnityEngine.Object.Instantiate<GameObject>(original, vector2, Quaternion.LookRotation(vector));
-							switch (submunition.Type)
+							//Do case by case stuff for differnet types
+                            switch (submunition.Type)
 							{
 								case BallisticProjectile.Submunition.SubmunitionType.GameObject:
 									{
@@ -155,10 +184,10 @@ namespace AndrewFTW
 										break;
 									}
 								case BallisticProjectile.Submunition.SubmunitionType.Rigidbody:
-									gameObject.GetComponent<Rigidbody>().velocity = vector * launchVel;
+									gameObject.GetComponent<Rigidbody>().velocity = _richochetVector * launchVel;
 									break;
 								case BallisticProjectile.Submunition.SubmunitionType.StickyBomb:
-									gameObject.GetComponent<Rigidbody>().velocity = vector * VelocityOverride;
+									gameObject.GetComponent<Rigidbody>().velocity = _richochetVector * VelocityOverride;
 									if (parentRound.PassesFirearmReferenceToSubmunitions)
 									{
 										MF2_StickyBomb component4 = gameObject.GetComponent<MF2_StickyBomb>();
@@ -170,13 +199,20 @@ namespace AndrewFTW
 									}
 									break;
 								case BallisticProjectile.Submunition.SubmunitionType.MeleeThrown:
-									gameObject.GetComponent<Rigidbody>().velocity = vector * Mathf.Max(launchVel, parentRound.m_initialMuzzleVelocity);
+									gameObject.GetComponent<Rigidbody>().velocity = _richochetVector * Mathf.Max(launchVel, parentRound.m_initialMuzzleVelocity);
 									break;
 								case BallisticProjectile.Submunition.SubmunitionType.Demonade:
-									gameObject.GetComponent<Rigidbody>().velocity = vector * launchVel;
+									gameObject.GetComponent<Rigidbody>().velocity = _richochetVector * launchVel;
 									gameObject.GetComponent<MF2_Demonade>().SetIFF(parentRound.Source_IFF);
 									break;
 							}
+
+
+							//Delete self after a few cm so it doesnt keep going on a Y
+							//itll go ~10cm more then die
+							parentRound.MaxRange = parentRound.m_distanceTraveled + 0.1f;
+
+
 						}
 					}
 				}

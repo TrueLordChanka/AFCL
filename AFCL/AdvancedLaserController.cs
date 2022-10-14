@@ -18,6 +18,7 @@ namespace AndrewFTW
         public List<string> ListOfEmitterNames;
         public List<GameObject> ListOfEmitterObjects;
         public List<GameObject> ListOfEmittersTandemItems;
+        public List<Types> ListOfEmitterTypes;
         public Setting[] EmitterMode;
         public GameObject TextFrame; //This is the frame for the text
         public GameObject FrameLArrow; //These are the arrows that will be childs of the frame
@@ -31,7 +32,16 @@ namespace AndrewFTW
         private int _currentEmitterIndex = 0;
         private int _numberOfEmitters;
 
-
+        public enum Types
+        {
+            Other,
+            Vislaser,
+            IrLaser,
+            Light,
+            IrLight,
+            StrobeController,
+            Rangefinder
+        }
         public enum Setting
         {
             Off, //0
@@ -43,11 +53,18 @@ namespace AndrewFTW
         public void Awake()
         {
             _numberOfEmitters = ListOfEmitterObjects.Count; // sets the number of emmitters to be the number
-            Debug.Log("Num of emitters: " + _numberOfEmitters);
+            //Debug.Log("Num of emitters: " + _numberOfEmitters);
 
             FrameLArrow.SetActive(false);
             FrameRArrow.SetActive(true);
             Attachment = (AttachmentInterface as FVRFireArmAttachmentInterface).Attachment;
+
+            if(ListOfEmitterTypes.Count != ListOfEmitterObjects.Count)
+            {
+                //THis is a state which breaks citys thing, kill it
+                Debug.LogError("The list of emmitter types is not equal to the list of emitter objects. This will cause other things to break. \n Go fix it now.");
+                Destroy(this);
+            }
 
 #if !(UNITY_EDITOR || UNITY_5 || DEBUG == true)
             Hook();
@@ -56,7 +73,7 @@ namespace AndrewFTW
 #if !(UNITY_EDITOR || UNITY_5 || DEBUG == true)
         public void Hook()
         {
-            Debug.Log("Hooking the attachment to find when its attached or detached");
+            //Debug.Log("Hooking the attachment to find when its attached or detached");
             On.FistVR.FVRFireArmAttachment.AttachToMount += FVRFireArmAttachment_AttachToMount;
         }
 

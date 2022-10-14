@@ -63,6 +63,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BetterAffixedFlashlight.cs" />
+    <Compile Include="AirdropMarker.cs" />
+    <Compile Include="BlastJumpOnFire.cs" />
+    <Compile Include="TubeFedSlamfireToggle.cs" />
     <Compile Include="TubeFedShotgunInteractableSelector.cs" />
     <Compile Include="Spas12Safety.cs" />
     <Compile Include="DetonateAfterTime.cs" />
