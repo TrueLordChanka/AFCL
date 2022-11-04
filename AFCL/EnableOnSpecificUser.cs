@@ -2,31 +2,55 @@
 using System.Collections.Generic;
 using Steamworks;
 using UnityEngine;
+using FistVR;
 
 
 public class EnableOnSpecificUser : MonoBehaviour
 {
-
+	public action Action;
 	public System.Collections.Generic.List<CSteamID> listofUsers;
 
+	[Header("Object Enable")]
 	public GameObject objectToEnable;
-	public bool disablesOnSucess = false;
+
+	[Header("Firearm Modify")]
+	public Handgun Handgun;
+	public bool HasMagReleaseButton;
+	public enum action
+    {
+		Enable,
+		Disable,
+		ModifyFirearm
+    }
 
 	// Use this for initialization
 	void Start()
 	{
 		CSteamID userID = SteamUser.GetSteamID();
-		//Debug.Log("My Steam ID is: " + userID);
+		
 		if (listofUsers.Contains(userID))
 		{
-			if (!disablesOnSucess)
-			{
-				objectToEnable.SetActive(true);
-			}
-			else
-			{
-				objectToEnable.SetActive(false);
-			}
+            switch (Action)
+            {
+				case action.Enable:
+                {
+					objectToEnable.SetActive(true);
+				}
+                break;
+              
+				case action.Disable:
+                {
+					objectToEnable.SetActive(false);
+				}
+				break;
+
+				case action.ModifyFirearm:
+                {
+					Handgun.HasMagReleaseInput = true;
+                }
+				break;
+				default: break;
+            }
 
 		}
 	}

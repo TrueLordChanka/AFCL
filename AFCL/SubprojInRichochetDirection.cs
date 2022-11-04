@@ -46,6 +46,10 @@ namespace AndrewFTW
 		{
 			_parentRoundVel = 120f;
 			Hook();
+			_overlapCapsulRadius = Mathf.Abs(Mathf.Tan(TargetingFOV * Mathf.Deg2Rad) * TargetingRange);
+
+			//Debug.Log("Radius = " + _overlapCapsulRadius + " Target FOV w/ math is" + TargetingFOV * Mathf.Deg2Rad + " range = " + TargetingRange);
+			
 		}
 
 		public void Hook()
@@ -111,35 +115,64 @@ namespace AndrewFTW
                             if (IsSmartRicochet)
                             {
 								//makes a capsul between two points, with the layer maks n shit
-								int NumTargets = Physics.OverlapCapsuleNonAlloc(transform.position, transform.position + TargetingRange * _richochetVector, _overlapCapsulRadius, _targetArray, LM_TargetMask, QueryTriggerInteraction.Collide);
+								//Debug.Log(_overlapCapsulRadius);
+								int NumTargets = Physics.OverlapCapsuleNonAlloc(transform.position + 0.1f * _richochetVector, transform.position + TargetingRange * _richochetVector, _overlapCapsulRadius, _targetArray, LM_TargetMask, QueryTriggerInteraction.Collide);
+								Debug.Log(NumTargets);
 
-								Vector3 _aimedRichochetVector;
-								int _SelectedTarget = UnityEngine.Random.Range(0, NumTargets);
-
-								//The aimed vector is the position between the target and the transform
-								_aimedRichochetVector = _targetArray[_SelectedTarget].transform.position - transform.position;
-
-								//If the line is withing the cone and it doesnt hit any blockers...
-								if(Vector3.Angle(_aimedRichochetVector, _richochetVector) < TargetingFOV && !Physics.Linecast(transform.position, _targetArray[_SelectedTarget].transform.position - transform.forward * 0.2f, LM_Blockers))
-								{
-									//Aim the actual vector to the aimed vector
-									_richochetVector = _aimedRichochetVector;
-								} else //If the check doesnt succeed on the first target, 
+								if(_targetArray.Length > 0) //if there arnt any targets dont do anything
                                 {
+									//Debug.Log("Target");
+									Vector3 _aimedRichochetVector;
+									int _validTarget;
+
+									int _SelectedLink = UnityEngine.Random.Range(0, 2);
+
 									for (int k = 0; k < NumTargets; k++)
-									{
-										_aimedRichochetVector = _targetArray[k].transform.position - transform.position;
-										if (Vector3.Angle(_aimedRichochetVector, _richochetVector) < TargetingFOV && !Physics.Linecast(transform.position, _targetArray[k].transform.position - transform.forward * 0.2f, LM_Blockers))
-                                        {
+                                    {
+										int _SelectedTarget = UnityEngine.Random.Range(0, NumTargets); //select a random target
+
+										_aimedRichochetVector = _targetArray[_SelectedTarget].GetComponent<Rigidbody>().GetComponent<Sosig>().Links[_SelectedLink].transform.position;
+
+										//_aimedRichochetVector = _targetArray[_SelectedTarget].transform.position - transform.position;
+
+										if (Vector3.Angle(_aimedRichochetVector, _richochetVector) < TargetingFOV && !Physics.Linecast(transform.position, _targetArray[_SelectedTarget].transform.position - transform.forward * 0.2f, LM_Blockers))
+										{
+											//Aim the actual vector to the aimed vector
 											_richochetVector = _aimedRichochetVector;
-
-											k = 40;
-
-
+											break;
 										}
 									}
-								}
 
+
+									/*
+									//int _SelectedTarget = UnityEngine.Random.Range(0, NumTargets);
+									
+									//The aimed vector is the position between the target and the transform
+									_aimedRichochetVector = _targetArray[_SelectedTarget].transform.position - transform.position;
+
+									//If the line is withing the cone and it doesnt hit any blockers...
+									if (Vector3.Angle(_aimedRichochetVector, _richochetVector) < TargetingFOV && !Physics.Linecast(transform.position, _targetArray[_SelectedTarget].transform.position - transform.forward * 0.2f, LM_Blockers))
+									{
+										//Aim the actual vector to the aimed vector
+										_richochetVector = _aimedRichochetVector;
+									}
+									else //If the check doesnt succeed on the first target, 
+									{
+										for (int k = 0; k < NumTargets; k++)
+										{
+											_aimedRichochetVector = _targetArray[k].transform.position - transform.position;
+											if (Vector3.Angle(_aimedRichochetVector, _richochetVector) < TargetingFOV && !Physics.Linecast(transform.position, _targetArray[k].transform.position - transform.forward * 0.2f, LM_Blockers))
+											{
+												_richochetVector = _aimedRichochetVector;
+
+												k = 40;
+
+
+											}
+										}
+									}
+									*/
+								}
 							}
 
 

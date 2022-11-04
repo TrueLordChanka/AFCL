@@ -59,13 +59,14 @@ namespace AndrewFTW
             FrameRArrow.SetActive(true);
             Attachment = (AttachmentInterface as FVRFireArmAttachmentInterface).Attachment;
 
+            
             if(ListOfEmitterTypes.Count != ListOfEmitterObjects.Count)
             {
                 //THis is a state which breaks citys thing, kill it
                 Debug.LogError("The list of emmitter types is not equal to the list of emitter objects. This will cause other things to break. \n Go fix it now.");
                 Destroy(this);
             }
-
+            
 #if !(UNITY_EDITOR || UNITY_5 || DEBUG == true)
             Hook();
 #endif

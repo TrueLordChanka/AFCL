@@ -10,7 +10,7 @@ using BepInEx.Configuration;
 namespace AndrewFTW
 {
 #if !DEBUG
-    [BepInPlugin("h3vr.andrew_ftw.afcl", "Another Fucken Code Library", "1.0.0")] //used to be Liberary if this breaks shit
+    [BepInPlugin("h3vr.andrew_ftw.afcl", "Another Fucken Code Library", "2.24.1")] //used to be Liberary if this breaks shit
     
     class AFCL_BepInEx : BaseUnityPlugin
     {
