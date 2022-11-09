@@ -62,8 +62,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ChangePhysWhenSpent.cs" />
     <Compile Include="BetterAffixedFlashlight.cs" />
     <Compile Include="AirdropMarker.cs" />
+    <Compile Include="BackBlast.cs" />
     <Compile Include="BlastJumpOnFire.cs" />
     <Compile Include="TubeFedSlamfireToggle.cs" />
     <Compile Include="TubeFedShotgunInteractableSelector.cs" />

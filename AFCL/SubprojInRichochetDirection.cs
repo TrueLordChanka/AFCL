@@ -18,6 +18,7 @@ namespace AndrewFTW
 		public bool IsSmartRicochet;
 		public float TargetingFOV = 5f;
 		public float TargetingRange = 20f;
+		public float SmartRicochetChance = 1f;
 		public LayerMask LM_TargetMask;
 		public LayerMask LM_Blockers;
 
@@ -25,7 +26,7 @@ namespace AndrewFTW
 		private bool m_hasFiredTangentMunitions;
 		private float _parentRoundVel;
 
-		private Collider[] _targetArray = new Collider[32];
+		private Collider[] _targetArray = new Collider[64];
 		private float _overlapCapsulRadius;
 
 		public void Update()
@@ -103,7 +104,6 @@ namespace AndrewFTW
 
 							}
 
-							
 							//Set the new trajectory to be the richochet
 							//Get the "normal" vector to the impact surface
 							Vector3 NormVector = parentRound.m_hit.normal;
@@ -111,67 +111,58 @@ namespace AndrewFTW
 							//Set the submunition vector to be that calculated angle from the norm
 							_richochetVector = Vector3.Reflect(velNorm, NormVector);
 
+
+
                             //Now, if its a smart richochet, we need to do that stuff
                             if (IsSmartRicochet)
                             {
-								//makes a capsul between two points, with the layer maks n shit
-								//Debug.Log(_overlapCapsulRadius);
-								int NumTargets = Physics.OverlapCapsuleNonAlloc(transform.position + 0.1f * _richochetVector, transform.position + TargetingRange * _richochetVector, _overlapCapsulRadius, _targetArray, LM_TargetMask, QueryTriggerInteraction.Collide);
-								Debug.Log(NumTargets);
-
-								if(_targetArray.Length > 0) //if there arnt any targets dont do anything
+								if (UnityEngine.Random.Range(0.00f, 1.00f) >= SmartRicochetChance)
                                 {
-									//Debug.Log("Target");
-									Vector3 _aimedRichochetVector;
-									int _validTarget;
+									//makes a capsul between two points, with the layer maks n shit
+									int NumTargets = Physics.OverlapCapsuleNonAlloc(transform.position + 0.1f * _richochetVector, transform.position + TargetingRange * _richochetVector, _overlapCapsulRadius, _targetArray, LM_TargetMask, QueryTriggerInteraction.Collide);
+									//Debug.Log("NumTargets = " + NumTargets);
 
-									int _SelectedLink = UnityEngine.Random.Range(0, 2);
-
-									for (int k = 0; k < NumTargets; k++)
-                                    {
-										int _SelectedTarget = UnityEngine.Random.Range(0, NumTargets); //select a random target
-
-										_aimedRichochetVector = _targetArray[_SelectedTarget].GetComponent<Rigidbody>().GetComponent<Sosig>().Links[_SelectedLink].transform.position;
-
-										//_aimedRichochetVector = _targetArray[_SelectedTarget].transform.position - transform.position;
-
-										if (Vector3.Angle(_aimedRichochetVector, _richochetVector) < TargetingFOV && !Physics.Linecast(transform.position, _targetArray[_SelectedTarget].transform.position - transform.forward * 0.2f, LM_Blockers))
-										{
-											//Aim the actual vector to the aimed vector
-											_richochetVector = _aimedRichochetVector;
-											break;
-										}
-									}
-
-
-									/*
-									//int _SelectedTarget = UnityEngine.Random.Range(0, NumTargets);
-									
-									//The aimed vector is the position between the target and the transform
-									_aimedRichochetVector = _targetArray[_SelectedTarget].transform.position - transform.position;
-
-									//If the line is withing the cone and it doesnt hit any blockers...
-									if (Vector3.Angle(_aimedRichochetVector, _richochetVector) < TargetingFOV && !Physics.Linecast(transform.position, _targetArray[_SelectedTarget].transform.position - transform.forward * 0.2f, LM_Blockers))
+									if (_targetArray.Length > 0) //if there arnt any targets dont do anything
 									{
-										//Aim the actual vector to the aimed vector
-										_richochetVector = _aimedRichochetVector;
-									}
-									else //If the check doesnt succeed on the first target, 
-									{
+										Vector3 _aimedRichochetVector;
+										int _validTarget;
+										SosigLink _targetedSosigLink;
+
+										int _SelectedLink = UnityEngine.Random.Range(0, 2);
+										//Debug.Log("selected link = " + _SelectedLink);
+
 										for (int k = 0; k < NumTargets; k++)
 										{
-											_aimedRichochetVector = _targetArray[k].transform.position - transform.position;
-											if (Vector3.Angle(_aimedRichochetVector, _richochetVector) < TargetingFOV && !Physics.Linecast(transform.position, _targetArray[k].transform.position - transform.forward * 0.2f, LM_Blockers))
+											int _SelectedTarget = UnityEngine.Random.Range(0, NumTargets); //select a random target
+																										   //Debug.Log("selected targert number = " + _SelectedTarget);
+
+											_targetedSosigLink = _targetArray[_SelectedTarget].attachedRigidbody.GetComponent<SosigLink>();
+											//Debug.Log("Target name = " + _targetArray[_SelectedTarget].attachedRigidbody.gameObject.name);
+
+											if (_targetedSosigLink != null && _targetedSosigLink.S.BodyState != Sosig.SosigBodyState.Dead)
 											{
-												_richochetVector = _aimedRichochetVector;
+												_aimedRichochetVector = _targetedSosigLink.S.Links[_SelectedLink].transform.position - transform.position;
+												//Debug.Log("GotTargetComponent");
+												if (Vector3.Angle(_aimedRichochetVector, _richochetVector) < TargetingFOV) //&& !Physics.Linecast(transform.position, _targetedSosigLink.S.Links[_SelectedLink].transform.position - transform.forward * 0.2f, LM_Blockers)
+												{
+													//Debug.Log("Targeting was a sucess!");
+													//Aim the actual vector to the aimed vector
+													_richochetVector = _aimedRichochetVector;
+													break;
 
-												k = 40;
-
-
+												}
+												else
+												{
+													//Debug.Log("Targeting failed, retrying");
+												}
 											}
+											else
+											{
+												//Debug.Log("SosigLink is null");
+											}
+											//Debug.Log("Set Target, Carrying on");
 										}
 									}
-									*/
 								}
 							}
 
