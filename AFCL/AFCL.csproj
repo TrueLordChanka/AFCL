@@ -45,6 +45,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>G:\H3VR Prts\TSInstallLocal\H3VR\profiles\TestingProfile\BepInEx\plugins\MMHOOK\MMHOOK_Assembly-CSharp.dll</HintPath>
     </Reference>
+    <Reference Include="OpenScripts2">
+      <HintPath>G:\H3VR Prts\TSInstallNew\H3VR\profiles\TestingProfile\BepInEx\plugins\cityrobo-OpenScripts2\OpenScripts2.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -62,6 +65,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AttachableMagWell.cs" />
+    <Compile Include="SpringLoadedStockFirearmControl.cs" />
+    <Compile Include="SpringLoadedStockButton.cs" />
     <Compile Include="ChangePhysWhenSpent.cs" />
     <Compile Include="BetterAffixedFlashlight.cs" />
     <Compile Include="AirdropMarker.cs" />
