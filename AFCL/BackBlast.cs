@@ -14,7 +14,7 @@ namespace AndrewFTW
         public FVRFireArm Firearm;
         public List<GameObject> SpawnOnSplode;
 
-#if !(UNITY_EDITOR || UNITY_5)
+#if !(UNITY_EDITOR || UNITY_5 )
 
         public void Awake()
         {

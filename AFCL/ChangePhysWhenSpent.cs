@@ -15,7 +15,7 @@ namespace AndrewFTW
         public GameObject UnfiredPhys;
         public GameObject FiredPhys;
 
-#if !(UNITY_EDITOR || UNITY_5)
+#if !(UNITY_EDITOR || UNITY_5 || DEBUG == true)
 
         public void Awake()
         {

@@ -23,7 +23,8 @@ namespace AndrewFTW
         public float DropSpeedInheritPercent = 0.05f;
         //public float MaxInaccuracy = 0.5f;
 
-
+        [Header("Misc Settings")]
+        public bool DoesRequireSkySight = false;
 
         private Transform _vehicleInstPt;
         private Transform _centerPt;
@@ -45,14 +46,14 @@ namespace AndrewFTW
             transform.localEulerAngles = new Vector3(0, _randomRot, 0);
             
             _vehicleInstPt = new GameObject("VehicleInstPt").transform;
-            _vehicleInstPt.position = new Vector3( transform.localPosition.x, transform.localPosition.y + SpawnAltitude , transform.localPosition.z - SpawnRadius );
+            _vehicleInstPt.localPosition = new Vector3( transform.localPosition.x, transform.localPosition.y + SpawnAltitude , transform.localPosition.z - SpawnRadius );
 
             //Create a center point of which to aim our vehicle at
             _centerPt = new GameObject("CenterPoint").transform;
             _centerPt.position = new Vector3(transform.position.x, transform.position.y + SpawnAltitude, transform.position.z);
 
             //set the parents of the two points to be the marker for cleanup later
-            _vehicleInstPt.SetParent(transform, true);
+            _vehicleInstPt.SetParent(transform, false);
             _centerPt.SetParent(transform,true);
 
             // We set the position to be the x pos of the marker, the y+alt of the makrer, and then z-radius cause positive z goes to the right and I want it to go left to right
@@ -63,15 +64,20 @@ namespace AndrewFTW
 
             //_inaccuracy = UnityEngine.Random.Range(-MaxInaccuracy, MaxInaccuracy);
 
-            if(Physics.Raycast(transform.position, _centerPt.position))
+            if (DoesRequireSkySight) //only do this if we require lign of sight
             {
-                //Theres somthing above, abort
-                //Debug.Log("No Line of sight");
-                EndDrop();
-            } else
-            {
-                //Debug.Log("Line of sight");
+                if (Physics.Raycast(transform.position, _centerPt.position))
+                {
+                    //Theres somthing above, abort
+                    //Debug.Log("No Line of sight");
+                    EndDrop();
+                }
+                else
+                {
+                    //Debug.Log("Line of sight");
+                }
             }
+            
            
         }
 

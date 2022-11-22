@@ -14,7 +14,7 @@ namespace AndrewFTW
         public FVRFireArm Firearm;
         public float lungeStrength = -2;
 
-#if !(UNITY_EDITOR || UNITY_5)
+#if !(UNITY_EDITOR || UNITY_5 || DEBUG == true)
         
          public void Awake()
         {
