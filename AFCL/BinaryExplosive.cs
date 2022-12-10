@@ -21,6 +21,12 @@ namespace AndrewFTW
 
 #if !(UNITY_EDITOR || UNITY_5)
         
+        public void Awake()
+        {
+            
+        }
+
+
 
         public void Update()
         {
@@ -51,17 +57,21 @@ namespace AndrewFTW
 
                 }
 
-                //If the object is held make it not held
-                if (BaseObj.IsHeld)
+                
+                if (BaseObj != null)
                 {
-                    FVRViveHand _hand = BaseObj.m_hand;
-                    _hand.ForceSetInteractable(null);
-                    BaseObj.EndInteraction(_hand);
+                    //If the object is held make it not held
+                    if (BaseObj.IsHeld)
+                    {
+                        FVRViveHand _hand = BaseObj.m_hand;
+                        _hand.ForceSetInteractable(null);
+                        BaseObj.EndInteraction(_hand);
+                    }
+                    Destroy(BaseObj.gameObject); //destroy the baseobj
                 }
 
-                //Destroy the object itself
-                Destroy(BaseObj.gameObject);
 
+                Destroy(this.gameObject); //destroy the obj the script is on for use in non-interactable obj things, like the speakers on the modmas map
             }
         }
 		

@@ -12,6 +12,8 @@ namespace AndrewFTW
     {
         [Header("Drop Vehicle")]
         public GameObject DropVehicle;
+        
+
         public float WaitToSpawn = 0;
         public float SpawnAltitude = 100;
         public float SpawnRadius = 1000;
@@ -19,18 +21,22 @@ namespace AndrewFTW
         public float ZeroingOffset = 0;
 
         [Header("Drop Prefab")]
-        public GameObject DropPrefab;
+        public GameObject[] DropPrefabs;
         public float DropSpeedInheritPercent = 0.05f;
         //public float MaxInaccuracy = 0.5f;
 
         [Header("Misc Settings")]
         public bool DoesRequireSkySight = false;
+        public bool IsDestructable = false;
+        
 
         private Transform _vehicleInstPt;
         private Transform _centerPt;
         private GameObject _vehicleInstance;
         private bool _droppedPayload = false;
-        //private float _inaccuracy;
+        private float _sleighDistanceTraveled = 0f;
+        private AirdropVehicle _airDropVehicle;
+        
 
 #if !(UNITY_EDITOR || UNITY_5)
 
@@ -46,11 +52,11 @@ namespace AndrewFTW
             transform.localEulerAngles = new Vector3(0, _randomRot, 0);
             
             _vehicleInstPt = new GameObject("VehicleInstPt").transform;
-            _vehicleInstPt.localPosition = new Vector3( transform.localPosition.x, transform.localPosition.y + SpawnAltitude , transform.localPosition.z - SpawnRadius );
+            _vehicleInstPt.localPosition = new Vector3( SpawnRadius, SpawnAltitude , 0 );
 
             //Create a center point of which to aim our vehicle at
             _centerPt = new GameObject("CenterPoint").transform;
-            _centerPt.position = new Vector3(transform.position.x, transform.position.y + SpawnAltitude, transform.position.z);
+            _centerPt.localPosition = new Vector3(transform.localPosition.x, SpawnAltitude, transform.localPosition.z);
 
             //set the parents of the two points to be the marker for cleanup later
             _vehicleInstPt.SetParent(transform, false);
@@ -61,7 +67,8 @@ namespace AndrewFTW
             _vehicleInstance = Instantiate(DropVehicle, _vehicleInstPt); //Spawn the vehicle at the inst point
             _vehicleInstance.transform.localPosition = new Vector3(0, 0, 0); //Ensure the vehicle spawns at the correct spot
             _vehicleInstance.transform.SetParent(null, true); //This will set the vehicle free from the point, the vehicle is now on its own in the world
-
+            Debug.Log( Vector3.Distance(_vehicleInstance.transform.position, _centerPt.transform.position));
+            Debug.Log(Vector3.Distance(_vehicleInstPt.transform.position, _centerPt.transform.position));
             //_inaccuracy = UnityEngine.Random.Range(-MaxInaccuracy, MaxInaccuracy);
 
             if (DoesRequireSkySight) //only do this if we require lign of sight
@@ -77,8 +84,9 @@ namespace AndrewFTW
                     //Debug.Log("Line of sight");
                 }
             }
+            _airDropVehicle = _vehicleInstance.GetComponent<AirdropVehicle>();
             
-           
+            
         }
 
         
@@ -87,6 +95,7 @@ namespace AndrewFTW
         {
             //move the thing at speed
             _vehicleInstance.GetComponent<Rigidbody>().velocity = _vehicleInstance.transform.forward * TravelSpeed;
+            _sleighDistanceTraveled = Vector3.Distance(_vehicleInstance.transform.position, _vehicleInstPt.transform.position);
 
             //when it reaches the center spawn the box (or the value of the inaccuracy) Skipped for now
             // TODO Fix inaccuracy. I want to have the negative values work... I guess I could have both the distance from center and spawn, and when the 
@@ -94,34 +103,49 @@ namespace AndrewFTW
             //
             // Lets make it spawn first...
             // 
+            
 
-            if(Vector3.Distance(_vehicleInstance.transform.position, _centerPt.transform.position) <= TravelSpeed*0.04 + ZeroingOffset && !_droppedPayload)
+            if (_sleighDistanceTraveled >= SpawnRadius - ZeroingOffset && !_droppedPayload)
             {   // If its close spawn the payload, at 95% altitude
                 //if youre here youre close enought to spawn it
-                Debug.Log("Dropped");
-                Transform _dropPt = _vehicleInstance.transform;
-                //_dropPt.position = new Vector3(_dropPt.position.x, _dropPt.position.y - SpawnAltitude * 0.05f , _dropPt.position.z);
-                GameObject _dropInstance = Instantiate(DropPrefab, _dropPt );
-                _dropInstance.transform.position = new Vector3(_dropInstance.transform.position.x, _dropInstance.transform.position.y - SpawnAltitude * 0.02f, _dropInstance.transform.position.z);
-                _dropInstance.transform.SetParent(null, true);
-                _dropInstance.GetComponent<Rigidbody>().velocity = _vehicleInstance.GetComponent<Rigidbody>().velocity * DropSpeedInheritPercent;
+                //Debug.Log("Dropped");
+                Transform _dropTrans = gameObject.transform;
+                foreach (GameObject dropitem in DropPrefabs)
+                {
+                    GameObject _dropInstance = Instantiate(dropitem, _dropTrans);
+                    _dropInstance.transform.position = new Vector3(_vehicleInstance.transform.position.x, _vehicleInstance.transform.position.y - SpawnAltitude * 0.02f, _vehicleInstance.transform.position.z - 3);
+                    _dropInstance.transform.SetParent(null, true);
+                    _dropInstance.GetComponent<Rigidbody>().velocity = _vehicleInstance.GetComponent<Rigidbody>().velocity * DropSpeedInheritPercent;
 
+                }
                 _droppedPayload = true;
+                _airDropVehicle.ActivateVoice();
             }
+
 
             if((Vector3.Distance(_vehicleInstance.transform.position, _centerPt.transform.position) > SpawnRadius * 2f))
             {
-                //Debug.Log("End");
+                //Debug.Log("End" + Vector3.Distance(_vehicleInstance.transform.position, _centerPt.transform.position));
                 EndDrop();
             }
 
 
-
+            if (IsDestructable)
+            {
+                //Debug.Log(_airDropVehicle.DestructableDestroyed);
+                //Debug.Log(_airDropVehicle.name);
+                if (_airDropVehicle.DestructableDestroyed == true)
+                {
+                    //Debug.Log("End");
+                    EndDrop(); //End the drop, even if you didnt get your presents. Bah Humbug.
+                }
+            }
         }
 
 
         public void EndDrop()
         {
+            
             Destroy(_vehicleInstance);
             Destroy(gameObject);
         }
