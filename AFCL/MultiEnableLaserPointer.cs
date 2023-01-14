@@ -31,7 +31,7 @@ public class MultiEnableLaserPointer : FVRFireArmAttachmentInterface
 
 #if !(UNITY_EDITOR || UNITY_5)
 
-	public override void Awake()
+	public void Awake()
 	{
 		base.Awake();
 		this.BeamHitPoint.transform.SetParent(null);
@@ -61,7 +61,7 @@ public class MultiEnableLaserPointer : FVRFireArmAttachmentInterface
 	}
 
 
-	public override void FVRUpdate()
+	public void FVRUpdate()
 	{
 		base.FVRUpdate();
 		if (this.IsOn)

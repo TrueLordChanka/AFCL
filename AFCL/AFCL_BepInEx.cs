@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using BepInEx;
-using Steamworks;
 using UnityEngine;
 using BepInEx.Configuration;
 
@@ -16,7 +15,7 @@ namespace AndrewFTW
     {
         public ConfigEntry<bool> DoesUseArmingDistance;
         public ConfigEntry<float> StrobeFlashTime;
-
+        
          
         public AFCL_BepInEx()
         {
@@ -27,14 +26,17 @@ namespace AndrewFTW
             DoesUseArmingDistance = Config.Bind<bool>("Ammunition Settings", "Does_Use_ArmingDistance", true, "Used by ammunition which can require an arming distance, such as 40mm Grenades");
             StrobeFlashTime = Config.Bind<float>("Strobe Flashlight Flash time.", "StrobeFlashTime", 0.02f, "Used by flashlights that have a strobe option.");
             
+
             ProjectileArmingDistance.DoesUseArmingDistance = DoesUseArmingDistance.Value;
             StrobeController.StrobeFlashTime = StrobeFlashTime.Value;
+           
 
             //end config stuff
 
 
             Logger.LogInfo("Arming Distance set to " + DoesUseArmingDistance.Value);
             Logger.LogInfo("Strobe time set to " + StrobeFlashTime.Value);
+            
 
         }
        

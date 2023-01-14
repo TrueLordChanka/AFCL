@@ -23,12 +23,13 @@ namespace AndrewFTW
         [Header("Drop Prefab")]
         public GameObject[] DropPrefabs;
         public float DropSpeedInheritPercent = 0.05f;
+        public float DropSpawnOffset = 3f;
         //public float MaxInaccuracy = 0.5f;
 
         [Header("Misc Settings")]
         public bool DoesRequireSkySight = false;
         public bool IsDestructable = false;
-        
+        public LayerMask LMVehicleCrashLayers;
 
         private Transform _vehicleInstPt;
         private Transform _centerPt;
@@ -56,14 +57,24 @@ namespace AndrewFTW
 
             //Create a center point of which to aim our vehicle at
             _centerPt = new GameObject("CenterPoint").transform;
-            _centerPt.localPosition = new Vector3(transform.localPosition.x, SpawnAltitude, transform.localPosition.z);
+            _centerPt.localPosition = new Vector3( 0, SpawnAltitude, 0 );
 
             //set the parents of the two points to be the marker for cleanup later
             _vehicleInstPt.SetParent(transform, false);
             _centerPt.SetParent(transform,true);
 
-            // We set the position to be the x pos of the marker, the y+alt of the makrer, and then z-radius cause positive z goes to the right and I want it to go left to right
+            //Lets write some code so that santa stops hitting things
+            //while its gonna hit somthing, move it up 10 meters
+            Vector3 _dirVector = _centerPt.position - _vehicleInstPt.position;
+            while (Physics.Raycast(_vehicleInstPt.transform.position, _dirVector, 2 * SpawnRadius, LMVehicleCrashLayers))
+            {
+                _vehicleInstPt.transform.position = new Vector3(_vehicleInstPt.transform.position.x, _vehicleInstPt.transform.position.y + 10, _vehicleInstPt.transform.position.z);
+                _centerPt.transform.position = new Vector3(_centerPt.transform.position.x, _centerPt.transform.position.y + 10, _centerPt.transform.position.z);
+                _dirVector = _centerPt.position - _vehicleInstPt.position;
+            }
 
+
+            // We set the position to be the x pos of the marker, the y+alt of the makrer, and then z-radius cause positive z goes to the right and I want it to go left to right
             _vehicleInstance = Instantiate(DropVehicle, _vehicleInstPt); //Spawn the vehicle at the inst point
             _vehicleInstance.transform.localPosition = new Vector3(0, 0, 0); //Ensure the vehicle spawns at the correct spot
             _vehicleInstance.transform.SetParent(null, true); //This will set the vehicle free from the point, the vehicle is now on its own in the world
@@ -85,8 +96,10 @@ namespace AndrewFTW
                 }
             }
             _airDropVehicle = _vehicleInstance.GetComponent<AirdropVehicle>();
+
             
-            
+
+
         }
 
         
@@ -113,7 +126,7 @@ namespace AndrewFTW
                 foreach (GameObject dropitem in DropPrefabs)
                 {
                     GameObject _dropInstance = Instantiate(dropitem, _dropTrans);
-                    _dropInstance.transform.position = new Vector3(_vehicleInstance.transform.position.x, _vehicleInstance.transform.position.y - SpawnAltitude * 0.02f, _vehicleInstance.transform.position.z - 3);
+                    _dropInstance.transform.position = new Vector3(_vehicleInstance.transform.position.x, _vehicleInstance.transform.position.y - SpawnAltitude * 0.02f, _vehicleInstance.transform.position.z - DropSpawnOffset);
                     _dropInstance.transform.SetParent(null, true);
                     _dropInstance.GetComponent<Rigidbody>().velocity = _vehicleInstance.GetComponent<Rigidbody>().velocity * DropSpeedInheritPercent;
 
@@ -140,6 +153,10 @@ namespace AndrewFTW
                     EndDrop(); //End the drop, even if you didnt get your presents. Bah Humbug.
                 }
             }
+
+            
+
+
         }
 
 

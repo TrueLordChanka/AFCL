@@ -229,7 +229,7 @@ namespace Plugin.src
 			return this.m_proxy.IsFull;
 		}
 
-		public override void Awake()
+		public void Awake()
 		{
 			base.Awake();
 			if (this.UsesClips && this.ClipTrigger != null)
@@ -797,7 +797,7 @@ namespace Plugin.src
 
 		}
 	
-		public override void FVRFixedUpdate()
+		public void FVRFixedUpdate()
 		{
 			base.FVRFixedUpdate();
 			this.UpdateComponentDisplay();		

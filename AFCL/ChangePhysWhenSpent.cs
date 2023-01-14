@@ -27,7 +27,7 @@ namespace AndrewFTW
             orig(self, hand);
             if(self == Round) //If the round is itself, and the round is spent, change its physics
             {
-                if(Round.m_isSpent)
+                if(Round.IsSpent)
                 {
                     UnfiredPhys.SetActive(false);
                     FiredPhys.SetActive(true);

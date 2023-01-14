@@ -106,7 +106,7 @@ namespace Plugin.src
 
 
 		// Token: 0x06001A8F RID: 6799 RVA: 0x000C6F02 File Offset: 0x000C5302
-		public override void Awake()
+		public  void Awake()
 		{
 			base.Awake();
 			this.CalculateHandPoses();
@@ -144,7 +144,7 @@ namespace Plugin.src
 		}
 
 		// Token: 0x06001A94 RID: 6804 RVA: 0x000C703C File Offset: 0x000C543C
-		public override void FVRUpdate()
+		public  void FVRUpdate()
 		{
 			base.FVRUpdate();
 			Debug.DrawLine(this.Rifle.transform.TransformPoint(this.m_localHandPos_BoltDown), this.Rifle.transform.TransformPoint(this.m_localHandPos_BoltUp), Color.red);

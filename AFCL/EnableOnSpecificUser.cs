@@ -23,6 +23,7 @@ public class EnableOnSpecificUser : MonoBehaviour
 		ModifyFirearm
     }
 
+#if !(UNITY_EDITOR || UNITY_5)
 	// Use this for initialization
 	void Start()
 	{
@@ -54,4 +55,5 @@ public class EnableOnSpecificUser : MonoBehaviour
 
 		}
 	}
+#endif
 }

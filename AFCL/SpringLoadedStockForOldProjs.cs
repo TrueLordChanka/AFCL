@@ -28,7 +28,7 @@ namespace AndrewFTW
         static SpringLoadedStockForOldProjs()
         {
             On.FistVR.FVRInteractiveObject.SimpleInteraction += FVRInteractiveObject_SimpleInteraction;
-            Debug.Log("Hotdog");
+            //Debug.Log("Hotdog");
         }
 
         private static void FVRInteractiveObject_SimpleInteraction(On.FistVR.FVRInteractiveObject.orig_SimpleInteraction orig, FVRInteractiveObject self, FVRViveHand hand)
@@ -38,7 +38,7 @@ namespace AndrewFTW
             SpringLoadedStockForOldProjs _SpringStock; //create an instance of the script iot 
             if (_existingSpringStocks.TryGetValue(self, out _SpringStock))
             {
-                Debug.Log("Hotdog3");
+                //Debug.Log("Hotdog3");
                 _SpringStock.EjectStock();
             }
         }
@@ -46,7 +46,7 @@ namespace AndrewFTW
         public void Awake()
         {
             _existingSpringStocks.Add(InteractiveObject, this ); // Add this instance of the script to the dictionary
-            Debug.Log("Hotdog2");
+            //Debug.Log("Hotdog2");
         }
 
         

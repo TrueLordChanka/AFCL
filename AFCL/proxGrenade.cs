@@ -89,7 +89,7 @@ namespace Plugin.src
         bool iscounting = false;
 
 #if!(UNITY_EDITOR||UNITY_5)
-        public override void Awake()
+        public void Awake()
         {
             base.Awake();
         }
@@ -262,7 +262,7 @@ namespace Plugin.src
 
        
 
-        public override void FVRUpdate()
+        public void FVRUpdate()
         {
             base.FVRUpdate();
             if (this.m_rings.Count > 0)

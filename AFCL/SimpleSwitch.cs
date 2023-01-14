@@ -25,13 +25,16 @@ namespace AndrewFTW
 #if !(UNITY_EDITOR || UNITY_5)
 
 
-        public override void Start()
+        public void Start()
         {
-            foreach(GameObject items in ItemsToToggle) //make sure everythings actually disabled on spawn
+            base.Start();
+            if (ItemsToToggle[0].activeSelf) //if its active, set _isItemToggled to true
             {
-                items.SetActive(false);
+                _isItemToggled=true;
+            } else
+            {
+                _isItemToggled=false;
             }
-
         }
 
         public override void SimpleInteraction(FVRViveHand hand)
@@ -46,6 +49,7 @@ namespace AndrewFTW
                         item.SetActive(false);
                     }
                     SM.PlayCoreSound(FVRPooledAudioType.GenericClose, this.AudEvent_OffClip, base.transform.position); //play the off sound
+                    _isItemToggled = false;
                 } else
                 {
                     foreach (GameObject item in ItemsToToggle) //for each gameobject turn them on (theyre currently off)
@@ -53,6 +57,7 @@ namespace AndrewFTW
                         item.SetActive(true);
                     }
                     SM.PlayCoreSound(FVRPooledAudioType.GenericClose, this.AudEvent_OnClip, base.transform.position); //play the on sound
+                    _isItemToggled = true;
                 }
             }
         }

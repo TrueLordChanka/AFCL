@@ -18,7 +18,7 @@ namespace Plugin.src
         }
 
 
-        public override void Start()
+        public void Start()
         {
             this.G.RegisterRing(this);
             
@@ -142,7 +142,7 @@ namespace Plugin.src
         }
 
 
-        public override void FVRUpdate()
+        public void FVRUpdate()
         {
             this.UpdatePinPos();
             base.FVRUpdate();

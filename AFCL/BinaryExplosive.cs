@@ -19,8 +19,10 @@ namespace AndrewFTW
 
         private float _damageTaken;
 
-#if !(UNITY_EDITOR || UNITY_5)
         
+
+#if !(UNITY_EDITOR || UNITY_5)
+
         public void Awake()
         {
             
@@ -69,6 +71,8 @@ namespace AndrewFTW
                     }
                     Destroy(BaseObj.gameObject); //destroy the baseobj
                 }
+
+
 
 
                 Destroy(this.gameObject); //destroy the obj the script is on for use in non-interactable obj things, like the speakers on the modmas map

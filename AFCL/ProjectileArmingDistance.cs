@@ -51,7 +51,7 @@ namespace AndrewFTW
 			orig(self, t); //run the origional part of move bullet
 			if (parentRound == self)
 			{
-				if (self.m_distanceTraveled >= armingDistance)
+				if (parentRound.m_distanceTraveled >= armingDistance)
 				{
 					self.Submunitions = ArmedMunitions;
 				}
