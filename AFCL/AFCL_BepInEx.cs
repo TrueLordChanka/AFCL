@@ -13,7 +13,7 @@ namespace AndrewFTW
     
     class AFCL_BepInEx : BaseUnityPlugin
     {
-        public ConfigEntry<bool> DoesUseArmingDistance;
+        public ConfigEntry<bool> DoesUseArmingDistance2;
         public ConfigEntry<float> StrobeFlashTime;
         
          
@@ -23,18 +23,18 @@ namespace AndrewFTW
 
             //Config stuff
 
-            DoesUseArmingDistance = Config.Bind<bool>("Ammunition Settings", "Does_Use_ArmingDistance", true, "Used by ammunition which can require an arming distance, such as 40mm Grenades");
+            DoesUseArmingDistance2 = Config.Bind<bool>("Ammunition Settings", "Does_Use_ArmingDistance", false, "Used by ammunition which can require an arming distance, such as 40mm Grenades");
             StrobeFlashTime = Config.Bind<float>("Strobe Flashlight Flash time.", "StrobeFlashTime", 0.02f, "Used by flashlights that have a strobe option.");
             
 
-            ProjectileArmingDistance.DoesUseArmingDistance = DoesUseArmingDistance.Value;
+            ProjectileArmingDistance.DoesUseArmingDistance2 = DoesUseArmingDistance2.Value;
             StrobeController.StrobeFlashTime = StrobeFlashTime.Value;
            
 
             //end config stuff
 
 
-            Logger.LogInfo("Arming Distance set to " + DoesUseArmingDistance.Value);
+            Logger.LogInfo("Arming Distance set to " + DoesUseArmingDistance2.Value);
             Logger.LogInfo("Strobe time set to " + StrobeFlashTime.Value);
             
 

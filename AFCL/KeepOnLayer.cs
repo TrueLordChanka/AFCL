@@ -17,7 +17,7 @@ namespace AndrewFTW
 
         private static Dictionary<FVRPhysicalObject, KeepOnLayer> _keepOnLayers = new Dictionary<FVRPhysicalObject, KeepOnLayer>();
 
-#if !(UNITY_EDITOR || UNITY_5 )
+#if !(UNITY_EDITOR || UNITY_5 || DEBUG == true)
 
         static KeepOnLayer()
         {
@@ -30,7 +30,7 @@ namespace AndrewFTW
             KeepOnLayer _keepOnLayer;
             if(_keepOnLayers.TryGetValue(self, out _keepOnLayer))
             {
-                _keepOnLayer.UpdateColliderLayers();
+                _keepOnLayer.UpdateColliderLayers(); 
             }
 
         }

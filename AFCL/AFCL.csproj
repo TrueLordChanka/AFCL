@@ -33,10 +33,10 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Assembly-CSharp, Version=1.2.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\H3VR.GameLibs.0.106.9\lib\net35\Assembly-CSharp.dll</HintPath>
+      <HintPath>..\packages\H3VR.GameLibs.0.106.10\lib\net35\Assembly-CSharp.dll</HintPath>
     </Reference>
     <Reference Include="Assembly-CSharp-firstpass, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\H3VR.GameLibs.0.106.9\lib\net35\Assembly-CSharp-firstpass.dll</HintPath>
+      <HintPath>..\packages\H3VR.GameLibs.0.106.10\lib\net35\Assembly-CSharp-firstpass.dll</HintPath>
     </Reference>
     <Reference Include="BepInEx, Version=5.4.21.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\BepInEx.BaseLib.5.4.21\lib\net35\BepInEx.dll</HintPath>
@@ -48,7 +48,8 @@
     <Reference Include="MMHOOK_Assembly-CSharp-firstpass">
       <HintPath>G:\H3VR Prts\TSInstallNew\H3VR\profiles\TestingProfile\BepInEx\plugins\MMHOOK\MMHOOK_Assembly-CSharp-firstpass.dll</HintPath>
     </Reference>
-    <Reference Include="OpenScripts2">
+    <Reference Include="OpenScripts2, Version=1.0.0.0, Culture=neutral, processorArchitecture=AMD64">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>G:\H3VR Prts\TSInstallNew\H3VR\profiles\TestingProfile\BepInEx\plugins\cityrobo-OpenScripts2\OpenScripts2.dll</HintPath>
     </Reference>
     <Reference Include="System" />
@@ -61,13 +62,16 @@
       <HintPath>..\packages\UnityEngine.5.6.1\lib\net35\UnityEngine.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.UI, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\H3VR.GameLibs.0.106.9\lib\net35\UnityEngine.UI.dll</HintPath>
+      <HintPath>..\packages\H3VR.GameLibs.0.106.10\lib\net35\UnityEngine.UI.dll</HintPath>
     </Reference>
     <Reference Include="Valve.Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\H3VR.GameLibs.0.106.9\lib\net35\Valve.Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\packages\H3VR.GameLibs.0.106.10\lib\net35\Valve.Newtonsoft.Json.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GrenadeLauncherRedDot.cs" />
+    <Compile Include="MagazineQueueFeed.cs" />
+    <Compile Include="AttachableSimpleFirearm.cs" />
     <Compile Include="BipodExtras.cs" />
     <Compile Include="BetterCaseless.cs" />
     <Compile Include="KeepOnLayer.cs" />

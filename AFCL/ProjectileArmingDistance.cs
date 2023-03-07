@@ -20,7 +20,7 @@ namespace AndrewFTW
 		public List<BallisticProjectile.Submunition> ArmedMunitions;
 
 		//[HideInInspector]
-		public static bool DoesUseArmingDistance;
+		public static bool DoesUseArmingDistance2;
 
 
 
@@ -30,7 +30,7 @@ namespace AndrewFTW
 		{
 			//Debug.Log("Does use Arming Distance? " + DoesUseArmingDistance);
 
-            if (!DoesUseArmingDistance)
+            if (!DoesUseArmingDistance2)
             {
 				parentRound.Submunitions = ArmedMunitions;
 			}
