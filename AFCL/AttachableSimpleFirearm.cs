@@ -144,7 +144,7 @@ namespace AndrewFTW
 
         public bool LoadChamber()
         {
-            if (isDebug) { Debug.Log("IntoLoadChamber chamberfull: " + Chamber.IsFull + " & maghasround: "+ Magazine.HasARound()); }
+            if (isDebug) { Debug.Log("IntoLoadChamber chamberfull: " + Chamber.IsFull + " & MagHasRound: "+ Magazine.HasARound()); }
             //if the chamber is empty, and there are rounds in the mag, move one to the chamber
             GameObject fromPrefabReference = null;
 

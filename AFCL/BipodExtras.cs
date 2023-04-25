@@ -27,7 +27,7 @@ namespace AndrewFTW
 
         public void Update()
         {
-            //Debug.Log(Round.name + " is a caseless round and is spent? " + Round.m_isSpent);
+            
             if (Bipod.m_isBipodExpanded && !m_beenUpdated) //if its expanded and this is the first time its seeing this 
             {
                 if (Rotatelegs)

@@ -69,6 +69,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AirstrikeOnInterval.cs" />
+    <Compile Include="ObjectMountOnGround.cs" />
     <Compile Include="GrenadeLauncherRedDot.cs" />
     <Compile Include="MagazineQueueFeed.cs" />
     <Compile Include="AttachableSimpleFirearm.cs" />

@@ -216,7 +216,7 @@ namespace AndrewFTW
         }
         public void UseNextZeroDistance()
         {
-            if (CurrentZeroDistanceIndex < ZeroDistances.Length - 1) CurrentZeroDistanceIndex++;
+            if (CurrentZeroDistanceIndex > 0) CurrentZeroDistanceIndex--;
             ReticleMeshRenderer.material.SetFloat(_nameOfDistanceVariable, ZeroDistances[CurrentZeroDistanceIndex]);
             UpdateScreen();
             Zero();
@@ -224,7 +224,7 @@ namespace AndrewFTW
 
         public void UsePreviousZeroDistance()
         {
-            if (CurrentZeroDistanceIndex > 0) CurrentZeroDistanceIndex--;
+            if (CurrentZeroDistanceIndex < ZeroDistances.Length - 1) CurrentZeroDistanceIndex++;
             ReticleMeshRenderer.material.SetFloat(_nameOfDistanceVariable, ZeroDistances[CurrentZeroDistanceIndex]);
             UpdateScreen();
             Zero();
@@ -352,6 +352,7 @@ namespace AndrewFTW
                 Vector3 projected_p = Vector3.ProjectOnPlane(p, this.transform.right) + Vector3.Dot(this.transform.position, this.transform.right) * this.transform.right;
 
                 TiltingOpticPart.LookAt(projected_p, this.transform.up);
+                TiltingOpticPart.localEulerAngles = new Vector3(TiltingOpticPart.localEulerAngles.x, TiltingOpticPart.localEulerAngles.y, 0f);
                 //this.camera.transform.localEulerAngles += new Vector3(-this.ElevationStep / 60f, this.WindageStep / 60f, 0);
 
             }

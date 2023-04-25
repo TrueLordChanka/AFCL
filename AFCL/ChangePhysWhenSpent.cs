@@ -15,7 +15,16 @@ namespace AndrewFTW
         public GameObject UnfiredPhys;
         public GameObject FiredPhys;
 
+        //private static Dictionary<FVRFireArmRound, ChangePhysWhenSpent> _existingChngPhysWnSpnts = new Dictionary<FVRFireArmRound, ChangePhysWhenSpent>();
+
 #if !(UNITY_EDITOR || UNITY_5 || DEBUG == true)
+        /*
+        static ChangePhysWhenSpent()
+        {
+
+        }
+        */
+
 
         public void Awake()
         {

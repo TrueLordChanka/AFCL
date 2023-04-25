@@ -27,6 +27,10 @@ namespace AndrewFTW
 
 		RenderTexture[] textures = new RenderTexture[16];
 
+		private void Awake()
+		{
+			base.GetComponent<Camera>().depthTextureMode = DepthTextureMode.Depth;
+		}
 
 		void OnRenderImage(RenderTexture src, RenderTexture dest)
 		{

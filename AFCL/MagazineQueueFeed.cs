@@ -47,6 +47,7 @@ namespace AndrewFTW
 			if (isDebug) { Debug.Log("aaaaaaaaaaa"); }
 			if ((!Mag.IsInfinite || !GM.CurrentSceneSettings.AllowsInfiniteAmmoMags) && !GM.CurrentSceneSettings.IsAmmoInfinite && !GM.CurrentPlayerBody.IsInfiniteAmmo)
 			{ //if its not infinite, do this
+				
 				if (GM.CurrentPlayerBody.IsAmmoDrain) //no fucken clue
 				{
 					Mag.m_numRounds = 0;
@@ -56,7 +57,7 @@ namespace AndrewFTW
 					if (Mag.m_numRounds > 0) //rounds are greater than zero, do this
 					{
 						Mag.LoadedRounds[0] = null;
-						for (int i = 0; i < Mag.m_numRounds; i++)
+						for (int i = 0; i < Mag.m_numRounds - 1; i++)
 						{
 							if (Mag.LoadedRounds[i + 1] != null)
 							{

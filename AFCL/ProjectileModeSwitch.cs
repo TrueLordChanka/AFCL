@@ -18,6 +18,7 @@ namespace AndrewFTW
 		[Header("Mode Control")]
 		public List<string> ModeName; //A list created of the class "c_ModeList"
 		public List<FireArmRoundClass> ModeClass;
+		public List<FVRObject> AltObjWrapper; //For saving in the rig
 
 		private int _currentMode = 0;
 		
@@ -114,6 +115,7 @@ namespace AndrewFTW
             }
 
 			ParentRound.RoundClass = ModeClass[_currentMode]; //sets the rounds class to the current selected class
+			ParentRound.ObjectWrapper = AltObjWrapper[_currentMode]; //sets the object wrapper
 
 		}
 

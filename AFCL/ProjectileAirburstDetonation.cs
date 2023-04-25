@@ -18,50 +18,44 @@ namespace AndrewFTW
 		public Transform SensorDirectionOverride;
 		public Transform SubProjDirectionOverride;
 
-
 		private Vector3 _sensorDirection;
 		private Vector3 _subProjDirection;
 		private RaycastHit _raycastHit;
 
+		private static Dictionary<BallisticProjectile, ProjectileAirburstDetonation> _projAirDets = new Dictionary<BallisticProjectile, ProjectileAirburstDetonation>();
+
 #if !(UNITY_EDITOR || UNITY_5 || DEBUG == true)
 
-		public void Awake()
+		static ProjectileAirburstDetonation()
         {
-			
-			Hook();
-
+			On.FistVR.BallisticProjectile.MoveBullet += BallisticProjectile_MoveBullet;
 		}
 
-		public void Hook()
-        {
-            On.FistVR.BallisticProjectile.MoveBullet += BallisticProjectile_MoveBullet;
-		}
-
-        private void BallisticProjectile_MoveBullet(On.FistVR.BallisticProjectile.orig_MoveBullet orig, BallisticProjectile self, float t)
-        {
-			if(parentRound == self)
-            {
-                if (!CheckAirburst())
-                {
+		private static void BallisticProjectile_MoveBullet(On.FistVR.BallisticProjectile.orig_MoveBullet orig, BallisticProjectile self, float t)
+		{
+			ProjectileAirburstDetonation _projAirDet;
+			if (_projAirDets.TryGetValue(self, out _projAirDet))
+			{
+				if (!_projAirDet.CheckAirburst())
+				{
 					orig(self, t);
 				}
-            }
-            else
-            {
+			}
+			else
+			{
 				orig(self, t);
 			}
 
-			
-        }
+		}
+
+		public void Awake()
+        {
+			_projAirDets.Add(parentRound, this);
+		}
 
 		public void OnDestroy()
 		{
-			Unhook();
-		}
-
-		public void Unhook()
-		{
-			On.FistVR.BallisticProjectile.MoveBullet -= BallisticProjectile_MoveBullet;
+			_projAirDets.Remove(parentRound);
 		}
 
 		public bool CheckAirburst()

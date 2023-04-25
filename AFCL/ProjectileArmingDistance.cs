@@ -15,58 +15,47 @@ namespace AndrewFTW
 		public BallisticProjectile parentRound;
 		public float armingDistance;
 
-
 		[Header("Armed Subprojectiles")]
 		public List<BallisticProjectile.Submunition> ArmedMunitions;
 
 		//[HideInInspector]
 		public static bool DoesUseArmingDistance2;
 
-
+		private static Dictionary<BallisticProjectile, ProjectileArmingDistance> _existingProjArmDists = new Dictionary<BallisticProjectile, ProjectileArmingDistance>();
 
 #if !(UNITY_EDITOR || UNITY_5 || DEBUG == true)
 
-		public void Awake()
-		{
-			//Debug.Log("Does use Arming Distance? " + DoesUseArmingDistance);
-
-            if (!DoesUseArmingDistance2)
-            {
-				parentRound.Submunitions = ArmedMunitions;
-			}
-			Hook();
-
-			
-
-		}
-
-		public void Hook()
-		{
-			Debug.Log("Hooking Ballistic Projectile");
-            On.FistVR.BallisticProjectile.MoveBullet += BallisticProjectile_MoveBullet;
-		}
-
-        private void BallisticProjectile_MoveBullet(On.FistVR.BallisticProjectile.orig_MoveBullet orig, BallisticProjectile self, float t)
+		static ProjectileArmingDistance()
         {
-			orig(self, t); //run the origional part of move bullet
-			if (parentRound == self)
+			if (!DoesUseArmingDistance2)
 			{
-				if (parentRound.m_distanceTraveled >= armingDistance)
+				On.FistVR.BallisticProjectile.MoveBullet += BallisticProjectile_MoveBullet;
+			}
+		}
+
+		private static void BallisticProjectile_MoveBullet(On.FistVR.BallisticProjectile.orig_MoveBullet orig, BallisticProjectile self, float t)
+		{
+			orig(self, t); //run the origional part of move bullet
+			ProjectileArmingDistance _projArmDist;
+
+			if (_existingProjArmDists.TryGetValue(self, out _projArmDist))
+			{
+				if (_projArmDist.parentRound.m_distanceTraveled >= _projArmDist.armingDistance)
 				{
-					self.Submunitions = ArmedMunitions;
+					_projArmDist.parentRound.Submunitions = _projArmDist.ArmedMunitions;
 				}
 			}
-            
-        }
+
+		}
+
+		public void Awake()
+		{
+			_existingProjArmDists.Add(parentRound, this);
+		}
 
 		public void OnDestroy()
         {
-			Unhook();
-        }
-
-		public void Unhook()
-        {
-			On.FistVR.BallisticProjectile.MoveBullet -= BallisticProjectile_MoveBullet;
+			_existingProjArmDists.Remove(parentRound);
 		}
 
 #endif
