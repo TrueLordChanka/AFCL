@@ -35,7 +35,7 @@ namespace Plugin.src
         private bool firstRun = false;
 
 
-#if !(UNITY_EDITOR || UNITY_5)
+#if !(UNITY_EDITOR || UNITY_5|| DEBUG == true)
 
         private void Start() //defaults the blade to off
         {

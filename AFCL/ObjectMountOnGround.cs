@@ -21,7 +21,7 @@ namespace AndrewFTW
 
         private bool m_OnGround;
 
-#if !(UNITY_EDITOR || UNITY_5 )
+#if !(UNITY_EDITOR || UNITY_5 || DEBUG == true)
 
         public override void BeginInteraction(FVRViveHand hand)
         {
