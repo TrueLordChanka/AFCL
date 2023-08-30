@@ -5,11 +5,12 @@ using System.Text;
 using BepInEx;
 using UnityEngine;
 using BepInEx.Configuration;
+using System.IO;
 
 namespace AndrewFTW
 {
 #if !DEBUG
-    [BepInPlugin("h3vr.andrew_ftw.afcl", "Another Fucken Code Library", "2.25.0")] //used to be Liberary if this breaks shit
+    [BepInPlugin("h3vr.andrew_ftw.afcl", "Another Fucken Code Library", "2.34.1")] //used to be Liberary if this breaks shit
     
     class AFCL_BepInEx : BaseUnityPlugin
     {
@@ -19,6 +20,10 @@ namespace AndrewFTW
          
         public AFCL_BepInEx()
         {
+            string pluginPath = Path.GetDirectoryName(Info.Location);
+            string youLikeKissingSosigsDontYou = File.ReadAllText(Path.Combine(pluginPath, "boykisser.txt"));
+            Logger.LogInfo(youLikeKissingSosigsDontYou);
+
             Logger.LogInfo("AFCL loaded!");
 
             //Config stuff

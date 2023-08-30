@@ -57,10 +57,11 @@ namespace AndrewFTW
             if (m_isSafe) //do the animation for the part
             {
                 base.SetAnimatedComponent(Safety, Safety_ValRange.x, Safety_Interp, Safety_Axis);
-
+                Debug.Log("a");
             } else
             {
                 base.SetAnimatedComponent(Safety, Safety_ValRange.y, Safety_Interp, Safety_Axis);
+                Debug.Log("b");
             }
             base.PlayAudioEvent(FirearmAudioEventType.FireSelector, 1f); //play click click audio
         }
@@ -127,15 +128,15 @@ namespace AndrewFTW
             
             
 
-            Debug.Log(Stock.IsOpen + " is open and is cocked? " + m_isCocked);
+            //Debug.Log(Stock.IsOpen + " is open and is cocked? " + m_isCocked);
         }
 
         public void Fire() //gun should be good to fire
         {
-            Debug.Log("into fire");
+            //Debug.Log("into fire");
             if(Chamber.IsFull && !Chamber.IsSpent)
             {
-                Debug.Log("chamber full and not spent");
+                //Debug.Log("chamber full and not spent");
                 Chamber.Fire(); //fire proj
                 Fire(Chamber, GetMuzzle(), true, 1f, -1f); //do gun firing stuff like buzzing
                 FireMuzzleSmoke(); //self explanatory

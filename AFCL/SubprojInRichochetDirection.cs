@@ -125,7 +125,7 @@ namespace AndrewFTW
 									if (_targetArray.Length > 0) //if there arnt any targets dont do anything
 									{
 										Vector3 _aimedRichochetVector;
-										int _validTarget;
+										//int _validTarget;
 										SosigLink _targetedSosigLink;
 
 										int _SelectedLink = UnityEngine.Random.Range(0, 2);

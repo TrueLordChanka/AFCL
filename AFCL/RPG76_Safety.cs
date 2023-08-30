@@ -17,6 +17,7 @@ namespace AndrewFTW
 
         public override void SimpleInteraction(FVRViveHand hand)
         {
+            //Debug.Log("fak");
             RPG76.ToggleSafety();
             base.SimpleInteraction(hand);
         }

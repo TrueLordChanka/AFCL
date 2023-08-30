@@ -8,6 +8,10 @@ using UnityEngine;
 
 namespace AndrewFTW
 {
+	using System.Collections;
+	using System.Collections.Generic;
+	using UnityEngine;
+
 	[ExecuteInEditMode]
 	public class NightVisionPostEffect : MonoBehaviour
 	{
@@ -27,10 +31,6 @@ namespace AndrewFTW
 
 		RenderTexture[] textures = new RenderTexture[16];
 
-		private void Awake()
-		{
-			base.GetComponent<Camera>().depthTextureMode = DepthTextureMode.Depth;
-		}
 
 		void OnRenderImage(RenderTexture src, RenderTexture dest)
 		{
@@ -98,5 +98,6 @@ namespace AndrewFTW
 
 		}
 	}
+
 }
 
