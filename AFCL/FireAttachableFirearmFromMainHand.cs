@@ -16,7 +16,10 @@ namespace AndrewFTW
         public AttachableFirearm AttachableFirearm;
         public firearmActionMode FirearmActionMode = firearmActionMode.ClosedBolt;
         public FireSelectorModeType MainWeponFireMode = FireSelectorModeType.Single;
+        public AudioEvent SwitchSound;
 
+        private float triggerFW;
+        private float triggerRW;
 
         public enum FireSelectorModeType
         {
@@ -43,6 +46,19 @@ namespace AndrewFTW
         public void Awake()
         {
             fireAttachables.Add(FireArm, this);
+            if (FirearmActionMode == firearmActionMode.ClosedBolt)
+            {
+                ClosedBoltWeapon wep = (ClosedBoltWeapon)FireArm;
+                triggerFW = wep.Trigger_ForwardValue;
+                triggerRW = wep.Trigger_RearwardValue;
+
+            }
+            else if (FirearmActionMode == firearmActionMode.OpenBolt)
+            {
+                OpenBoltReceiver wep = (OpenBoltReceiver)FireArm;
+                triggerFW = wep.Trigger_ForwardValue;
+                triggerRW = wep.Trigger_RearwardValue; 
+            }
         }
 
         public void OnDestroy()
@@ -100,17 +116,23 @@ namespace AndrewFTW
             //Now I need to make it so when the player fires it goes to the secondary gun
             //Debug.Log("set to" + selectorOnMain);
             selectorOnMain = !selectorOnMain;
+            SM.PlayGenericSound(SwitchSound, transform.position);
             if (!selectorOnMain) //if the gun is not targeted
             {
+                
                 if(FirearmActionMode == firearmActionMode.ClosedBolt)
                 {
                     ClosedBoltWeapon wep = (ClosedBoltWeapon)self;  
                     wep.FireSelector_Modes[wep.m_fireSelectorMode].ModeType = ClosedBoltWeapon.FireSelectorModeType.Safe;
+                    wep.Trigger_ForwardValue = 0;
+                    wep.Trigger_RearwardValue = 0;
 
                 } else if( FirearmActionMode == firearmActionMode.OpenBolt)
                 {
                     OpenBoltReceiver wep = (OpenBoltReceiver)self;
                     wep.FireSelector_Modes[wep.m_fireSelectorMode].ModeType = OpenBoltReceiver.FireSelectorModeType.Safe;
+                    wep.Trigger_ForwardValue = 0;
+                    wep.Trigger_RearwardValue = 0;
                 }
                 
 
@@ -126,7 +148,9 @@ namespace AndrewFTW
                     {
                         wep.FireSelector_Modes[wep.m_fireSelectorMode].ModeType = ClosedBoltWeapon.FireSelectorModeType.FullAuto;
                     }
-                    
+                    wep.Trigger_ForwardValue = triggerFW;
+                    wep.Trigger_RearwardValue = triggerRW;
+
                 }
                 else if (FirearmActionMode == firearmActionMode.OpenBolt)
                 {
@@ -139,7 +163,8 @@ namespace AndrewFTW
                     {
                         wep.FireSelector_Modes[wep.m_fireSelectorMode].ModeType = OpenBoltReceiver.FireSelectorModeType.FullAuto;
                     }
-                    
+                    wep.Trigger_ForwardValue = triggerFW;
+                    wep.Trigger_RearwardValue = triggerRW;
                 }
             }
         }

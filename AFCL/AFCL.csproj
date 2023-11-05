@@ -69,7 +69,13 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="SpawnVaultFileOnAwake.cs" />
+    <Compile Include="Airdrop_Vehicle.cs" />
+    <Compile Include="Airdrop_Controller.cs" />
+    <Compile Include="Airdrop_Marker.cs" />
     <Compile Include="AirstrikeOnInterval.cs" />
+    <Compile Include="Blaster.cs" />
+    <Compile Include="StunVolume.cs" />
     <Compile Include="FireAttachableFirearmFromMainHand.cs" />
     <Compile Include="ClosedBoltFireAttachedFirearmWithFiremode.cs" />
     <Compile Include="RPG76_Safety.cs" />

@@ -16,7 +16,7 @@ namespace AndrewFTW
     {
         public ConfigEntry<bool> DoesUseArmingDistance2;
         public ConfigEntry<float> StrobeFlashTime;
-        
+        public static string PluginPath;
          
         public AFCL_BepInEx()
         {
@@ -41,10 +41,13 @@ namespace AndrewFTW
 
             Logger.LogInfo("Arming Distance set to " + DoesUseArmingDistance2.Value);
             Logger.LogInfo("Strobe time set to " + StrobeFlashTime.Value);
-            
 
+            PluginPath = Path.GetDirectoryName(Info.Location);
         }
        
+        
+
+
     }
 #endif
 }

@@ -13,6 +13,9 @@ namespace AndrewFTW
     {
         public FVRFireArm Firearm;
         public SpringLoadedStockButton StockButton;
+        bool IsDian;
+
+        
 
 #if !(UNITY_EDITOR || UNITY_5)
 
@@ -21,13 +24,40 @@ namespace AndrewFTW
             if(Firearm.m_hand != null)
             {
                 FVRViveHand hand = Firearm.m_hand;
-                if(!hand.IsInStreamlinedMode)
+                if (!IsDian)
                 {
-                    if (hand.Input.TouchpadDown && Vector2.Angle(hand.Input.TouchpadAxes, Vector2.right) < 45f) //button clicked
+                    if (!hand.IsInStreamlinedMode)
                     {
-                        StockButton.EjectStock();
+                        if (hand.Input.TouchpadDown && Vector2.Angle(hand.Input.TouchpadAxes, Vector2.right) < 45f) //button clicked
+                        {
+                            StockButton.EjectStock(false);
+                        }
                     }
                 }
+                if(IsDian)
+                {
+                    ClosedBoltWeapon wep = (ClosedBoltWeapon)Firearm;
+                    if(wep.FireSelector_Modes[wep.m_fireSelectorMode].ModeType == ClosedBoltWeapon.FireSelectorModeType.Safe)
+                    {
+                        if (hand.IsInStreamlinedMode)
+                        {
+                            if (hand.Input.BYButtonDown )
+                            {
+                                StockButton.EjectStock(false);
+                            }
+                        } else
+                        {
+                            if(hand.Input.TouchpadDown && Vector2.Angle(hand.Input.TouchpadAxes, Vector2.left) < 45f)
+                            {
+                                StockButton.EjectStock(false);
+                            }
+                        }
+                    }
+                     
+                    
+                    
+                }
+                
             }
         }
 #endif

@@ -37,6 +37,8 @@ namespace AFCL
 			public float EngagementDelay;
 		}
 
+#if !(UNITY_EDITOR || UNITY_5 || DEBUG == true)
+
 		public new void Awake()
         {
 			base.Awake();
@@ -104,6 +106,7 @@ namespace AFCL
 			base.OnDestroy();
 			On.FistVR.ClosedBoltWeapon.Fire -= ClosedBoltWeapon_Fire;
 		}
+#endif
+	}
 
-    }
 }
